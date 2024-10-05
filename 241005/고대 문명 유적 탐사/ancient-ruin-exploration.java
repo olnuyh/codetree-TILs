@@ -42,8 +42,8 @@ public class Main {
             int[] pos = new int[2];
             int turnCnt = 0;
 
-            for (int i = 3; i >= 1; i--) {
-                for (int j = 3; j >= 1; j--) {
+            for (int j = 3; j >= 1; j--) {
+                for (int i = 3; i >= 1; i--) {
                     int[][] tempMap = new int[5][5];
 
                     copy(tempMap, map);
