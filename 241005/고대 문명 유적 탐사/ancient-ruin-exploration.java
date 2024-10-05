@@ -64,6 +64,10 @@ public class Main {
                 }
             }
 
+            if (maxVal == 0) {
+                continue;
+            }
+
             int[][] tempMap = new int[5][5];
 
             copy(tempMap, map);
