@@ -29,28 +29,19 @@ public class Main {
 
             int[] center = {-2, c};
 
-            boolean isPossible = true;
-
-            while (isPossible) {
-                isPossible = false;
-
-                while (canGo(center[0] + 1, center[1], 0)) { // 남쪽 이동
+            while (true) {
+                if (canGo(center[0] + 1, center[1], 0)) { // 남쪽 이동
                     center[0]++;
-                    isPossible = true;
-                }
-
-                while (canGo(center[0], center[1] - 1, 1) && canGo(center[0] + 1, center[1] - 1, 1)) { // 서쪽 이동
+                } else if (canGo(center[0], center[1] - 1, 1) && canGo(center[0] + 1, center[1] - 1, 1)) { // 서쪽 이동
                     center[0]++;
                     center[1]--;
                     dir = (dir + 3) % 4;
-                    isPossible = true;
-                }
-
-                while (canGo(center[0], center[1] + 1, 3) && canGo(center[0] + 1, center[1] + 1, 3)) { // 동쪽 이동
+                } else if (canGo(center[0], center[1] + 1, 3) && canGo(center[0] + 1, center[1] + 1, 3)) { // 동쪽 이동
                     center[0]++;
                     center[1]++;
                     dir = (dir + 1) % 4;
-                    isPossible = true;
+                } else {
+                    break;
                 }
             }
 
