@@ -118,13 +118,13 @@ public class Main {
                 int nr = cur[0] + deltas[d][0];
                 int nc = cur[1] + deltas[d][1];
                 
-                if (nr < 0 || !isIn(nr, nc) || visited[nr][nc]) {
+                if (nr < 0 || !isIn(nr, nc) || visited[nr][nc] || forest[nr][nc] == 0) {
                     continue;
                 }
 
                 int val = forest[nr][nc];
 
-                if ((cur[2] < 0 && val != 0) || cur[2] == val || val == -cur[2]) {
+                if ((cur[2] < 0 && (Math.abs(cur[2]) != Math.abs(val))) || (Math.abs(cur[2]) == Math.abs(val))) {
                     visited[nr][nc] = true;
                     q.offer(new int[]{nr, nc, val});
                 } 
