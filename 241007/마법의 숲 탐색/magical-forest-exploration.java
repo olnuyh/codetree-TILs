@@ -19,7 +19,7 @@ public class Main {
 
         answer = 0;
 
-        for (int k = 1; k <= 6; k++) { // K로 바꾸기
+        for (int k = 1; k <= K; k++) {
             st = new StringTokenizer(br.readLine());
 
             int c = Integer.parseInt(st.nextToken()) - 1;
