@@ -29,20 +29,29 @@ public class Main {
 
             int[] center = {-2, c};
 
-            while (canGo(center[0] + 1, center[1], 0)) { // 남쪽 이동
-                center[0]++;
-            }
+            boolean isPossible = true;
 
-            while (canGo(center[0], center[1] - 1, 1) && canGo(center[0] + 1, center[1] - 1, 1)) { // 서쪽 이동
-                center[0]++;
-                center[1]--;
-                dir = (dir + 3) % 4;
-            }
+            while (isPossible) {
+                isPossible = false;
 
-            while (canGo(center[0], center[1] + 1, 3) && canGo(center[0] + 1, center[1] + 1, 3)) { // 동쪽 이동
-                center[0]++;
-                center[1]++;
-                dir = (dir + 1) % 4;
+                while (canGo(center[0] + 1, center[1], 0)) { // 남쪽 이동
+                    center[0]++;
+                    isPossible = true;
+                }
+
+                while (canGo(center[0], center[1] - 1, 1) && canGo(center[0] + 1, center[1] - 1, 1)) { // 서쪽 이동
+                    center[0]++;
+                    center[1]--;
+                    dir = (dir + 3) % 4;
+                    isPossible = true;
+                }
+
+                while (canGo(center[0], center[1] + 1, 3) && canGo(center[0] + 1, center[1] + 1, 3)) { // 동쪽 이동
+                    center[0]++;
+                    center[1]++;
+                    dir = (dir + 1) % 4;
+                    isPossible = true;
+                }
             }
 
             if (center[0] <= 0) { // 숲을 벗어난 경우 초기화
