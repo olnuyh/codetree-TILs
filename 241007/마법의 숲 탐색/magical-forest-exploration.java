@@ -45,7 +45,7 @@ public class Main {
                 dir = (dir + 1) % 4;
             }
 
-            if (center[0] < 0) { // 숲을 벗어난 경우 초기화
+            if (center[0] <= 0) { // 숲을 벗어난 경우 초기화
                 for (int i = 0; i < R; i++) {
                     Arrays.fill(forest[i], 0);
                 }
