@@ -57,13 +57,8 @@ public class Main {
             check = new boolean[N][M];
 
             if (tryLaserAttack(new int[]{attacker.r, attacker.c}, new int[]{target.r, target.c})) {
-                laserAttack(new int[]{target.r, target.c}, new int[]{attacker.r, attacker.c}, attacker.power / 2);
-                
-                turrets[target.r][target.c].power -= attacker.power / 2;
-                
-                if (attacker.power % 2 == 1) {
-                    turrets[target.r][target.c].power--;
-                }
+                turrets[target.r][target.c].power -= attacker.power;
+                laserAttack(new int[]{target.r, target.c}, attacker.power / 2);
             } else { // 레이저 공격 불가 시 포탄 공격
                 check[target.r][target.c] = true;
                 turrets[target.r][target.c].power -= attacker.power;
@@ -175,58 +170,51 @@ public class Main {
         Queue<int[]> q = new ArrayDeque();
         q.offer(start);
 
-        int cnt = 1;
-        visited[start[0]][start[1]] = cnt++;
+        visited[start[0]][start[1]] = -1;
 
         while (!q.isEmpty()) {
             int size = q.size();
 
-            while (size-- > 0) {
-                int[] cur = q.poll();
+            int[] cur = q.poll();
 
-                for (int d = 0; d < 4; d++) {
-                    int nr = (cur[0] + deltas[d][0] + N) % N;
-                    int nc = (cur[1] + deltas[d][1] + M) % M;
+            for (int d = 0; d < 4; d++) {
+                int nr = (cur[0] + deltas[d][0] + N) % N;
+                int nc = (cur[1] + deltas[d][1] + M) % M;
 
-                    if (visited[nr][nc] == 0 && turrets[nr][nc].power != 0) {
-                        visited[nr][nc] = cnt;
-                        
-                        if (nr == end[0] && nc == end[1]) {
-                            return true;
-                        }
-
-                        q.offer(new int[]{nr, nc});
+                if (visited[nr][nc] == 0 && turrets[nr][nc].power != 0) {
+                    visited[nr][nc] = d + 1;
+                    
+                    if (nr == end[0] && nc == end[1]) {
+                        return true;
                     }
+
+                    q.offer(new int[]{nr, nc});
                 }
             }
-
-            cnt++;
         }
 
         return false;
     }
 
     // 레이저 공격 결과를 적용하는 함수
-    public static boolean laserAttack(int[] cur, int[] start, int power) {
-        if (cur[0] == start[0] && cur[1] == start[1]) {
-            return true;
-        }
+    public static void laserAttack(int[] target, int power) {
+        int nr = target[0];
+        int nc = target[1];
 
-        check[cur[0]][cur[1]] = true;
-        turrets[cur[0]][cur[1]].power -= power;
+        while (true) {
+            int dir = visited[nr][nc] - 1;
 
-        for (int d = 0; d < 4; d++) {
-            int nr = (cur[0] + deltas[d][0] + N) % N;
-            int nc = (cur[1] + deltas[d][1] + M) % M;
+            check[nr][nc] = true;
 
-            if (visited[nr][nc] == visited[cur[0]][cur[1]] - 1) {
-                if (laserAttack(new int[]{nr, nc}, start, power)) {
-                    break;
-                }
+            nr = (nr - deltas[dir][0] + N) % N;
+            nc = (nc - deltas[dir][1] + M) % M;
+
+            if (visited[nr][nc] == -1) {
+                break;
             }
-        }
 
-        return true;
+            turrets[nr][nc].power -= power;
+        }
     }
 
     // 포탄 공격하는 함수
