@@ -184,16 +184,17 @@ public class Main {
             while (size-- > 0) {
                 int[] cur = q.poll();
 
-                if (cur[0] == end[0] && cur[1] == end[1]) {
-                    return true;
-                }
-
                 for (int d = 0; d < 4; d++) {
                     int nr = (cur[0] + deltas[d][0] + N) % N;
                     int nc = (cur[1] + deltas[d][1] + M) % M;
 
                     if (visited[nr][nc] == 0 && turrets[nr][nc].power != 0) {
                         visited[nr][nc] = cnt;
+                        
+                        if (nr == end[0] && nc == end[1]) {
+                            return true;
+                        }
+
                         q.offer(new int[]{nr, nc});
                     }
                 }
@@ -214,7 +215,7 @@ public class Main {
         check[cur[0]][cur[1]] = true;
         turrets[cur[0]][cur[1]].power -= power;
 
-        for (int d = 3; d >= 0; d--) {
+        for (int d = 0; d < 4; d++) {
             int nr = (cur[0] + deltas[d][0] + N) % N;
             int nc = (cur[1] + deltas[d][1] + M) % M;
 
