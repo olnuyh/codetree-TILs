@@ -62,7 +62,7 @@ public class Main {
             } else { // 레이저 공격 불가 시 포탄 공격
                 check[target.r][target.c] = true;
                 turrets[target.r][target.c].power -= attacker.power;
-                bombAttack(new int[]{target.r, target.c}, attacker.power / 2);
+                bombAttack(new int[]{target.r, target.c}, new int[]{attacker.r, attacker.c}, attacker.power / 2);
             }
 
             check[attacker.r][attacker.c] = true;
@@ -218,12 +218,16 @@ public class Main {
     }
 
     // 포탄 공격하는 함수
-    public static void bombAttack (int[] target, int power) {
+    public static void bombAttack (int[] target, int[] attacker, int power) {
         for (int d = 0; d < 8; d++) {
             int nr = (target[0] + deltas[d][0] + N) % N;
             int nc = (target[1] + deltas[d][1] + M) % M;
 
             if (turrets[nr][nc].power == 0) {
+                continue;
+            }
+
+            if (nr == attacker[0] && nc == attacker[1]) {
                 continue;
             }
 
