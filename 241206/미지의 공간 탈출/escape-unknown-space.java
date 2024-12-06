@@ -126,16 +126,20 @@ public class Main {
         // 1. 시간의 벽 탈출
         time = moveInWall();
 
-        // 2. 시간의 벽을 탈출하는 동안 시간 이상 현상 처리
-        for (int i = 1; i <= time; i++) {
-            spreadTime(i);
+        if (time == -1) {
+            System.out.println(-1);
+        } else {
+            // 2. 시간의 벽을 탈출하는 동안 시간 이상 현상 처리
+            for (int i = 1; i <= time; i++) {
+                spreadTime(i);
+            }
+
+            time++;
+
+            // 3. 미지의 공간에서 탈출
+            int result = moveInfloor(start);
+            System.out.println(result);
         }
-
-        time++;
-
-        // 3. 미지의 공간에서 탈출
-        int result = moveInfloor(start);
-        System.out.println(result);
     }
 
     public static int moveInWall () { // 시간의 벽에서 이동하는 함수
@@ -155,7 +159,7 @@ public class Main {
             for (int d = 0; d < 4; d++) {
                 int nr = cur[1] + deltas[d][0];
                 int nc = cur[2] + deltas[d][1];
-
+                
                 if (isIn(nr, nc, M)) { // 같은 면에서 이동
                     if (visited[cur[0]][nr][nc] == 0 && wall[cur[0]][nr][nc] == 0) {
                         visited[cur[0]][nr][nc] = visited[cur[0]][cur[1]][cur[2]] + 1;
@@ -186,7 +190,7 @@ public class Main {
             } else if (CUR == WEST) {
                 return new int[] {c, M - 1 - r};
             } else if (CUR == NORTH) {
-                return new int[] {M - 1 - r, c};
+                return new int[] {M - 1 - r, M - 1 - c};
             } else {
                 return new int[] {r, c};
             }
@@ -199,7 +203,7 @@ public class Main {
         } else if ((CUR == TOP && NEXT == SOUTH) || (CUR == SOUTH && NEXT == TOP)) {
             return new int[] {M - 1 - r, c};
         } else if ((CUR == TOP && NEXT == NORTH) || (CUR == NORTH && NEXT == TOP)) {
-            return new int[] {r, M - 1 - r};
+            return new int[] {r, M - 1 - c};
         } else {
             return new int[] {r, M - 1 - c};
         }
