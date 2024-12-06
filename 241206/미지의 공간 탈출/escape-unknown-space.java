@@ -63,33 +63,42 @@ public class Main {
         }
 
         wall = new int[6][M][M];
-        int[] start = new int[]{-1, -1};
+        int[] start = new int[2];
+
+        boolean flag = false;
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                if (floor[i][j] == 0) {
+                if (floor[i][j] == 0 || floor[i][j] == 4) {
+                    List<int[]> temp = new ArrayList();
+
                     for (int d = 0; d < 4; d++) {
                         int nr = i + deltas[d][0];
                         int nc = j + deltas[d][1];
 
                         if (isIn(nr, nc, N) && floor[nr][nc] == 3) {
-                            start[0] = i;
-                            start[1] = j;
-
-                            wall[5][nr - wallStart[0]][nc - wallStart[1]] = -1;
-
-                            break;
+                            temp.add(new int[]{nr, nc});
                         }
+                    }
+
+                    if (temp.size() == 1) {
+                        int[] pos = temp.get(0);
+
+                        wall[5][pos[0] - wallStart[0]][pos[1] - wallStart[1]] = -1;
+
+                        start[0] = pos[0];
+                        start[1] = pos[1];
+
+                        flag = true;
+
+                        break;
                     }
                 }
             }
-        }
 
-        if (start[0] == -1) {
-            start[0] = exit[0];
-            start[1] = exit[1];
-
-            wall[5][exit[0] - wallStart[0]][exit[1] - wallStart[1]] = -1;
+            if (flag) {
+                break;
+            }
         }
 
         machine = new int[3];
@@ -153,7 +162,7 @@ public class Main {
             int[] cur = q.poll();
 
             if (cur[0] == BOTTOM) {
-                return visited[BOTTOM][cur[1]][cur[2]] - 1;
+                return visited[BOTTOM][cur[1]][cur[2]] - 2;
             }
 
             for (int d = 0; d < 4; d++) {
